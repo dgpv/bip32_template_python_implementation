@@ -1,3 +1,8 @@
+[![Package version](https://img.shields.io/pypi/v/bip32template.svg)](https://pypi.python.org/pypi/bip32template)
+[![Package license](https://img.shields.io/pypi/l/bip32template.svg)](https://pypi.python.org/pypi/bip32template)
+[![Python versions](https://img.shields.io/pypi/pyversions/bip32template.svg)](https://pypi.python.org/pypi/bip32template)
+[![Build Status](https://travis-ci.org/Simplexum/python-bitcointx.svg?branch=master)](https://pypi.python.org/pypi/python-bitcointx)
+
 # Python implementation of BIP32 path template parser finite state machine
 
 (compatible with [micropython](https://micropython.org/))
