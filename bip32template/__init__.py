@@ -170,7 +170,8 @@ if HAS_TYPING:
 class BIP32Template():
 
     def __init__(self, _sections: Iterable[Iterable[Tuple[int, int]]], *,
-                 is_partial: bool = False, hardened_marker: str = '',
+                 is_partial: bool = False,
+                 hardened_marker: str = HARDENED_MARKERS[0],
                  _accept_params_as_is: bool = False
                  ) -> None:
 
