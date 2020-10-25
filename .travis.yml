@@ -1,0 +1,26 @@
+language: python
+
+dist: focal
+
+stages: test
+
+python:
+  - "3.8"
+
+
+branches:
+  only:
+  - gh-pages
+  - /.*/
+
+before_install:
+
+install:
+    - sudo add-apt-repository universe
+    - sudo apt update
+    - sudo apt install micropython python3-pytest mypy
+    - micropython -m upip install unittest
+    - micropython -m upip install micropython-os.path
+
+script:
+  - "sh run_mypy.sh && pytest-3 && micropython micropython_unittest.py"
