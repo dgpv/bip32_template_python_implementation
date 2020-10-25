@@ -173,6 +173,10 @@ class Test_templates(unittest.TestCase):
                     self.assertTrue(tpl.match(path))
                     self.assertEqual(
                         BIP32Template.parse(str(tpl)).to_path(), path)
+                    self.assertEqual(tpl,
+                                     BIP32Template.from_path(
+                                         path, is_partial=tpl.is_partial,
+                                         hardened_marker=tpl.hardened_marker))
 
                 try:
                     tpl = BIP32Template.parse(

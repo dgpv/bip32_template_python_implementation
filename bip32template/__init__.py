@@ -618,6 +618,11 @@ class BIP32Template():
 
         return path
 
+    @classmethod
+    def from_path(cls: Type[T_BIP32Template], path: List[int],
+                  **kwargs: Any) -> T_BIP32Template:
+        return cls((((v, v), ) for v in path), **kwargs)
+
     def __eq__(self, other: Any) -> bool:
         """Checks for equality of two templates. Note that templates
         with different hardened markers can still be equal"""
