@@ -48,6 +48,10 @@ BIP32Template([[(2147483648, 2147483648)], [(1, 1)], [(2, 2)]], is_partial=False
 [2147483648, 1, 2]
 >>> tpl.match(ptpl.to_path())
 True
+>>> str(BIP32Template.from_path(ptpl.to_path(), is_partial=True))
+'0h/1/2'
+>>> str(BIP32Template.from_path(ptpl.to_path(), is_partial=False, hardened_marker="'"))
+"m/0'/1/2"
 ```
 
 ## Authors and contributors
