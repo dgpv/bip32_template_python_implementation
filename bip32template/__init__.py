@@ -342,6 +342,9 @@ class BIP32Template():
                 else:
                     sections[-1].append((range_start, range_end))
 
+            assert len(sections) <= max_sections
+            assert len(sections[-1]) <= max_ranges_per_section
+
             range_start = INVALID_INDEX
             range_end = INVALID_INDEX
 
@@ -444,8 +447,6 @@ class BIP32Template():
                 assert index_value == INVALID_INDEX
 
                 if c is None:
-                    if len(sections) > max_sections:
-                        err(BIP32TemplateExceptionPathTooLong)
                     return (Success.SUCCESS, None)
 
                 if c == '/':
@@ -492,9 +493,6 @@ class BIP32Template():
 
             elif state is State.SECTION_END:
                 assert index_value != INVALID_INDEX
-
-                if c is None and len(sections) == max_sections:
-                    err(BIP32TemplateExceptionPathTooLong)
 
                 if c == '/' or c is None:
                     finalize_range()
