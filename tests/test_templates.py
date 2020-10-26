@@ -283,7 +283,7 @@ class Test_templates(unittest.TestCase):
 
     def test_wrong_eq(self) -> None:
         with self.assertRaises(ValueError):
-            BIP32Template.from_path([0]) == 'a'
+            BIP32Template.from_path([0]) == 1
 
         self.assertNotEqual(BIP32Template.from_path([0]),
                             BIP32Template.from_path([0], is_partial=True))
