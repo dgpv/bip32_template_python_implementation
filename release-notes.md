@@ -1,5 +1,13 @@
 # bip32template release notes
 
+## v0.0.3
+
+Remove unnecessary path length checks (removed in the spec, too)
+
+Improve error checks in BIP32Template() direct instantiation
+
+Improve test coverage
+
 ## v0.0.2
 
 Use 'h' as default for `hardened_marker` argument of `BIP32Template.__init__()`
