@@ -23,4 +23,6 @@ install:
     - micropython -m upip install micropython-os.path
 
 script:
-  - "sh run_mypy.sh && pytest-3 && micropython micropython_unittest.py"
+  - sh run_mypy.sh
+  - pytest-3
+  - micropython micropython_unittest.py
