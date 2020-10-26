@@ -51,6 +51,7 @@ from bip32template import (
     BIP32TemplateExceptionRangeStartNextToPrevious,
     BIP32TemplateExceptionGotHardenedAfterUnhardened,
     BIP32TemplateExceptionDigitExpected,
+    BIP32TemplateExceptionInconsistentRange,
     BIP32TemplateException,
     BIP32Template,
     HARDENED_INDEX_START, HARDENED_INDEX_MASK
@@ -129,7 +130,7 @@ def _extract_path(tpl: BIP32Template, want_nomatch: bool = False) -> List[int]:
 
 
 class Test_templates(unittest.TestCase):
-    def test(self) -> None:
+    def test_from_spec_data(self) -> None:
         MAX_SECTIONS = 3
         MAX_RANGES = 4
 
@@ -241,3 +242,33 @@ class Test_templates(unittest.TestCase):
                         msg=('for error "{}" testcase "{}": {} != {}'
                              .format(errcase, tcase,
                                      exc.position, expected_pos)))
+
+    def test_direct_instantiation(self) -> None:
+        with self.assertRaises(BIP32TemplateExceptionPathEmpty):
+            BIP32Template([])
+
+        with self.assertRaises(BIP32TemplateExceptionRangeOrderBad):
+            BIP32Template([[(2, 1)]])
+
+        with self.assertRaises(BIP32TemplateExceptionRangesIntersect):
+            BIP32Template([[(1, 2), (1, 3)]])
+
+        with self.assertRaises(
+            BIP32TemplateExceptionGotHardenedAfterUnhardened
+        ):
+            BIP32Template.from_path([0, 0x80000000])
+
+        with self.assertRaises(BIP32TemplateExceptionInconsistentRange):
+            BIP32Template([[(0, 0x80000000)]])
+
+        with self.assertRaises(ValueError):
+            BIP32Template([[('a', 'b')]])  # type: ignore
+
+        with self.assertRaises(ValueError):
+            BIP32Template.from_path([-1])
+
+        with self.assertRaises(BIP32TemplateExceptionIndexTooBig):
+            BIP32Template([[(2**33, 2**33)]])
+
+        with self.assertRaises(BIP32TemplateExceptionUnexpectedHardenedMarker):
+            BIP32Template.from_path([0, 0], hardened_marker='a')

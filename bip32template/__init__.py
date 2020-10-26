@@ -178,6 +178,9 @@ class BIP32Template():
         if not _sections:
             raise BIP32TemplateExceptionPathEmpty
 
+        if hardened_marker and hardened_marker not in HARDENED_MARKERS:
+            raise BIP32TemplateExceptionUnexpectedHardenedMarker
+
         sections = []  # type: List[List[Tuple[int, int]]]
 
         if _accept_params_as_is:
@@ -189,17 +192,27 @@ class BIP32Template():
                 prev_r = None
                 new_ranges = []
                 for r in s:
+                    if len(r) != 2 or not isinstance(r[0], int) \
+                            or not isinstance(r[1], int):
+                        raise ValueError(
+                            'ranges must consist of (int, int) tuples')
+
                     start, end = r
+                    if start >= 2**32 or end >= 2**32:
+                        raise BIP32TemplateExceptionIndexTooBig
+
+                    if start < 0 or end < 0:
+                        raise ValueError('indexes must be positive')
+
                     if start > end:
                         raise BIP32TemplateExceptionRangeOrderBad
                     if prev_r is not None and prev_r[1] >= start:
                         raise BIP32TemplateExceptionRangesIntersect
                     if start >= HARDENED_INDEX_START:
+                        assert end >= HARDENED_INDEX_START  # checked above
                         got_hardened = True
                         if got_unhardened:
                             raise BIP32TemplateExceptionGotHardenedAfterUnhardened  # noqa
-                        if end < HARDENED_INDEX_START:
-                            raise BIP32TemplateExceptionInconsistentRange
                     else:
                         if end >= HARDENED_INDEX_START:
                             raise BIP32TemplateExceptionInconsistentRange
@@ -207,11 +220,6 @@ class BIP32Template():
                         got_unhardened = True
 
                     prev_r = r
-
-                    if len(r) != 2 or not isinstance(r[0], int) \
-                            or not isinstance(r[1], int):
-                        raise ValueError(
-                            'ranges must consist of (int, int) tuples')
 
                     new_ranges.append((r[0], r[1]))
 
@@ -223,9 +231,6 @@ class BIP32Template():
 
         self.sections = sections
         self.is_partial = is_partial
-
-        if hardened_marker and hardened_marker not in HARDENED_MARKERS:
-            raise BIP32TemplateExceptionUnexpectedHardenedMarker
 
         self.hardened_marker = hardened_marker
 
