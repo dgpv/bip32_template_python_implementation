@@ -156,6 +156,7 @@ class Test_templates(unittest.TestCase):
                                  tpl)
 
                 self.assertTrue(tpl.match(_extract_path(tpl)))
+                self.assertFalse(tpl.match(_extract_path(tpl) + [1]))
                 self.assertFalse(
                     tpl.match(_extract_path(tpl, want_nomatch=True)))
 
@@ -272,3 +273,26 @@ class Test_templates(unittest.TestCase):
 
         with self.assertRaises(BIP32TemplateExceptionUnexpectedHardenedMarker):
             BIP32Template.from_path([0, 0], hardened_marker='a')
+
+    def test_wrong_iterable(self) -> None:
+        with self.assertRaises(ValueError):
+            BIP32Template.parse((1, 2))
+
+        with self.assertRaises(ValueError):
+            BIP32Template.parse(('abc', 'def'))
+
+    def test_wrong_eq(self) -> None:
+        with self.assertRaises(ValueError):
+            BIP32Template.from_path([0]) == 'a'
+
+        self.assertNotEqual(BIP32Template.from_path([0]),
+                            BIP32Template.from_path([0], is_partial=True))
+
+    def test_repr(self) -> None:
+        self.assertEqual(
+            repr(BIP32Template.parse("m/[44,49,84]'/0'/0'/[0-1]/[0-50000]")),
+            "BIP32Template([[(2147483692, 2147483692), "
+            "(2147483697, 2147483697), (2147483732, 2147483732)], "
+            "[(2147483648, 2147483648)], [(2147483648, 2147483648)], "
+            "[(0, 1)], [(0, 50000)]], is_partial=False, "
+            "hardened_marker=\"'\")")

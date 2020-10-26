@@ -572,14 +572,14 @@ class BIP32Template():
             assert ret_state is not State.VALUE
 
             if c is None:
-                if new_state is not Success.SUCCESS:
-                    raise AssertionError(
-                        'only success state is permitted when data ends, '
-                        'any errors should cause exceptions to be raised')
+                assert new_state is Success.SUCCESS, \
+                    ('Only success state is permitted when data ends, '
+                     'any errors should cause exceptions to be raised')
                 break
 
-            if new_state is Success.SUCCESS:
-                break
+            assert new_state is not Success.SUCCESS, \
+                ("Success state should not happen if there's still characters "
+                 "left to parse")
 
             # When we are not using Enum (because it is unavailable
             # in micropython), mypy 0.761 cannot deduce that SUCCESS case
