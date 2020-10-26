@@ -276,7 +276,7 @@ class Test_templates(unittest.TestCase):
 
     def test_wrong_iterable(self) -> None:
         with self.assertRaises(ValueError):
-            BIP32Template.parse((1, 2))
+            BIP32Template.parse((1, 2))  # type: ignore
 
         with self.assertRaises(ValueError):
             BIP32Template.parse(('abc', 'def'))
