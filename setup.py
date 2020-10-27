@@ -10,7 +10,7 @@ with open(os.path.join(here, 'README.md')) as f:
 
 setup(
     name='bip32template',
-    version='0.0.3',
+    version='0.0.4',
     description='Reference implementation of BIP32 templates',
     long_description=README,
     long_description_content_type='text/markdown',

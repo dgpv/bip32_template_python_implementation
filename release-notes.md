@@ -1,5 +1,9 @@
 # bip32template release notes
 
+## v0.0.4
+
+Make apostrophe (') the default hardened marker, as this is more common default option
+
 ## v0.0.3
 
 Remove unnecessary path length checks (removed in the spec, too)
