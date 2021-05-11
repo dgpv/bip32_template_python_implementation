@@ -214,7 +214,7 @@ class Test_templates(unittest.TestCase):
                                              .format(expected_exc))
 
                     exc = check(False)
-                    if '[' not in tcase and '*' not in tcase:
+                    if '{' not in tcase and '*' not in tcase:
                         exc_onlypath = check(True)
                         self.assertEqual(str(exc), str(exc_onlypath))
 
@@ -290,7 +290,7 @@ class Test_templates(unittest.TestCase):
 
     def test_repr(self) -> None:
         self.assertEqual(
-            repr(BIP32Template.parse("m/[44,49,84]'/0'/0'/[0-1]/[0-50000]")),
+            repr(BIP32Template.parse("m/{44,49,84}'/0'/0'/{0-1}/{0-50000}")),
             "BIP32Template([[(2147483692, 2147483692), "
             "(2147483697, 2147483697), (2147483732, 2147483732)], "
             "[(2147483648, 2147483648)], [(2147483648, 2147483648)], "

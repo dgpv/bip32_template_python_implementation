@@ -256,7 +256,7 @@ class BIP32Template():
 
         tpl_iter = iter(tpl)
 
-        # structure for 0/[3-6,8]/2:
+        # structure for 0/{3-6,8}/2:
         # [ [ (0,0) ], [ (3,6), (8,8) ], [ (2,2) ] ]
         sections = []  # type: List[List[Tuple[int, int]]]
 
@@ -280,7 +280,7 @@ class BIP32Template():
                 err(BIP32TemplateExceptionUnexpectedFinish)
             if c in ' \t':
                 err(BIP32TemplateExceptionUnexpectedSpace)
-            if c in "m/[]-,*h'" or c.isdigit():
+            if c in "m/}{-,*h'" or c.isdigit():
                 err(BIP32TemplateExceptionUnexpectedCharacter)
             err(BIP32TemplateExceptionInvalidCharacter)
 
@@ -419,9 +419,9 @@ class BIP32Template():
                     err(BIP32TemplateExceptionUnexpectedSlash)
 
                 if not is_format_onlypath:
-                    if c in '[*' and len(sections) == max_sections:
+                    if c in '{*' and len(sections) == max_sections:
                         err(BIP32TemplateExceptionPathTooLong)
-                    if c == '[':
+                    if c == '{':
                         index_value = INVALID_INDEX
                         return (State.VALUE, State.RANGE_WITHIN_SECTION)
                     if c == '*':
@@ -484,7 +484,7 @@ class BIP32Template():
                     index_value = INVALID_INDEX
                     return (State.VALUE, State.RANGE_WITHIN_SECTION)
 
-                if c == ']':
+                if c == '}':
                     was_open = finalize_range()
                     check_range_correctness(was_open, is_last=True)
                     return (State.SECTION_END, None)
@@ -679,8 +679,8 @@ class BIP32Template():
                 assert self.hardened_marker
                 hm = self.hardened_marker
 
-            pre = '[' if got_many else ''
-            post = ']' if got_many else ''
+            pre = '{' if got_many else ''
+            post = '}' if got_many else ''
 
             s_parts.append('{}{}{}{}'.format(pre, ",".join(r_parts), post, hm))
 
