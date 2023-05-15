@@ -23,7 +23,7 @@ Example usage:
 
 ```python
 >>> from bip32template import BIP32Template
->>> tpl=BIP32Template.parse('m/0h/[1-9,23]/*')
+>>> tpl=BIP32Template.parse('m/0h/{1-9,23}/*')
 >>> tpl
 BIP32Template([[(2147483648, 2147483648)], [(1, 9), (23, 23)], [(0, 2147483647)]], is_partial=False, hardened_marker="h")
 >>> tpl.sections
@@ -38,7 +38,7 @@ True
 True
 >>> tpl.match([0x80000000, 99, 33])
 False
->>> BIP32Template.parse('m/0/1/[2-3]', is_format_onlypath=True)
+>>> BIP32Template.parse('m/0/1/{2-3}', is_format_onlypath=True)
 ...
 bip32template.BIP32TemplateExceptionUnexpectedCharacter: unexpected character at position 7
 >>> ptpl = BIP32Template.parse('m/0h/1/2', is_format_onlypath=True)
