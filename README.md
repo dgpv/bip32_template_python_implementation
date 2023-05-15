@@ -29,9 +29,9 @@ BIP32Template([[(2147483648, 2147483648)], [(1, 9), (23, 23)], [(0, 2147483647)]
 >>> tpl.sections
 [[(2147483648, 2147483648)], [(1, 9), (23, 23)], [(0, 2147483647)]]
 >>> str(tpl)
-'m/0h/[1-9,23]/*'
+'m/0h/{1-9,23}/*'
 >>> str(BIP32Template(tpl.sections, hardened_marker="'", is_partial=True))
-"0'/[1-9,23]/*"
+"0'/{1-9,23}/*"
 >>> tpl.to_path() is None
 True
 >>> tpl.match([0x80000000, 3, 33])
